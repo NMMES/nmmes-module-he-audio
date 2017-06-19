@@ -1,0 +1,18 @@
+{
+  "name": "nmmes-module-he-audio",
+  "version": "0.0.1",
+  "description": "NMMES he-audio module",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+      "type": "git",
+      "url": "https://github.com/NMMES/nmmes-module-he-audio.git"
+  },
+  "author": "Ayrton Sparling",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^1.1.3"
+  }
+}
