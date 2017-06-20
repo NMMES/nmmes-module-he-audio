@@ -51,28 +51,11 @@ video.start();
 
 ## Options
 
-You may pass the stats class an optional options object.
+You may pass the heAudio class an optional options object.
 
 ```javascript
-new stats({
-    type: 'csv', // Output type, only csv is currently supported
-    output: 'stats.csv', // Output location
-    /*
-    output: '/tmp/stats.csv'
-    If output is an absolute path it is not modified.
-
-    output: './stats.csv'
-    If output starts with a dot-slash, the path is resolved relative to your current working directory.
-
-    output: 'stats.csv'
-    The output is resolved relative to the video's output directory.
-    */
-    data: ['metadata.input.format.filename', 'metadata.input.format.bit_rate', 'reduction.percent', 'reduction.size']
-    /*
-    This array contains a list of attributes you would like to record to the stats file.
-    metadata.input...: Contains all possibilities from ffprobe -of json -show_streams -show_format /home/user/videos/video.mp4
-    reduction.percent: Output file size as a percentage of the input file size
-    reduction.size   : The actual change in size (in kilobytes)
-    */
+new heAudio({
+    encodeLossless: true, // Set to true if you would like to encode lossless audio streams (encode FLAC)
+    bitratePerChannel: 60, // Bitrate for he audio (40-60 is good)
 });
 ```
