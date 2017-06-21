@@ -6,13 +6,9 @@ A high efficiency audio module for nmmes-backend.
 
 - [nmmes-backend](https://github.com/NMMES/nmmes-backend) - Required in order to run this module.
 
-### Installation
-```
-npm install -S nmmes-module-he-audio
-yarn add nmmes-module-he-audio
-```
+## Installation
 
-You may install nmmes-module-he-audio via npm or yarn.
+[![NPM](https://nodei.co/npm/nmmes-module-he-audio.png?compact=true)](https://nodei.co/npm/nmmes-module-he-audio/)
 
 ### Usage
 
