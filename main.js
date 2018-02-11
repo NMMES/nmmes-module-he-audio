@@ -4,25 +4,19 @@ const nmmes = require('nmmes-backend');
 const Logger = nmmes.Logger;
 const chalk = require('chalk');
 
-/**
- * Arguments
- * downmix - should audio be downmixed as well
- */
-
 module.exports = class HeAudio extends nmmes.Module {
     constructor(args) {
         super(require('./package.json'));
-
-        this.args = Object.assign({
-            encodeLossless: false,
-            bitratePerChannel: 40 // In kilobytes
-        }, args);
+        this.options = Object.assign(nmmes.Module.defaults(HeAudio), args);
     }
-    executable(video, map) {
-        let args = this.args;
+    executable(map) {
+        let _self = this;
+        let options = this.options;
         let changes = {
             streams: {}
         };
+        let modifiedStreams = 0;
+        let totalAudioStreams = 0;
 
         return new Promise(function(resolve, reject) {
             const streams = Object.values(map.streams);
@@ -31,10 +25,12 @@ module.exports = class HeAudio extends nmmes.Module {
                 const identifier = stream.map.split(':');
                 const input = identifier[0];
                 const index = identifier[1];
-                const metadata = video.input.metadata[input].streams[index];
+                const metadata = _self.video.input.metadata[input].streams[index];
 
                 if (metadata.codec_type !== 'audio') continue;
-                if (~metadata.codec_name.toLowerCase().indexOf('lossless') && !args.encodeLossless) {
+                ++totalAudioStreams;
+
+                if (~metadata.codec_name.toLowerCase().indexOf('lossless') && !options.force) {
                     Logger.debug(`Audio stream ${chalk.bold(formatStreamTitle(metadata))} [${chalk.bold(stream.map)}] will not be encoded to he audio because it is lossless.`);
                     continue;
                 }
@@ -42,13 +38,40 @@ module.exports = class HeAudio extends nmmes.Module {
                 Logger.debug(`Applying he audio to audio stream ${chalk.bold(formatStreamTitle(metadata))} [${chalk.bold(stream.map)}]`);
                 changes.streams[index] = {
                     ['c:' + pos]: 'libopus',
-                    ['b:' + pos]: metadata.channels * args.bitratePerChannel + 'k',
-                    ['af']: `aformat=channel_layouts=${formatAudioChannels(metadata.channels)}`
+                    ['b:' + pos]: metadata.channels * options.bitrate + 'k',
+                    af: [`aformat=channel_layouts=${formatAudioChannels(metadata.channels)}`]
                 };
+
+                if (metadata.channels > 3 && options.downmix) {
+                    changes.streams[index].af.push('aresample=matrix_encoding=dplii')
+                    changes.streams[index].ac = 2;
+                }
             }
             resolve(changes);
         });
     };
+    static options() {
+        return {
+            'force': {
+                default: false,
+                describe: 'Convert all audio to HE format, including lossless formats.',
+                type: 'boolean',
+                group: 'Audio:'
+            },
+            'downmix': {
+                default: false,
+                describe: `Downmix he-audio opus to Dolby Pro Logic II.`,
+                type: 'boolean',
+                group: 'Audio:'
+            },
+            'bitrate': {
+                default: 40,
+                describe: `Sets encoding bitrate for he-audio.`,
+                type: 'boolean',
+                group: 'Audio:'
+            },
+        };
+    }
 }
 
 function formatAudioChannels(numChannels) {
