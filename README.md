@@ -10,48 +10,25 @@ A high efficiency audio module for nmmes-backend.
 
 [![NPM](https://nodei.co/npm/nmmes-module-he-audio.png?compact=true)](https://nodei.co/npm/nmmes-module-he-audio/)
 
-### Usage
-
-You will need to install the encoder module (`nmmes-module-encoder`) for this example.
-
-```javascript
-import {Video, Logger} from 'nmmes-backend';
-import encoder from 'nmmes-module-encoder';
-import heAudio from 'nmmes-module-he-audio';
-
-let video = new Video({
-    input: {
-        path: '/home/user/videos/video.mp4'
-    },
-    output: {
-        path: '/home/user/videos/encoded-video.mkv'
-    },
-    modules: [new heAudio(), new encoder({
-        defaults: {
-            video: {
-                'c:{POS}': 'libx265'
-            }
-        }
-    })]
-});
-
-video.on('stop', function(err) {
-    if (err)
-        return Logger.error('Error encoding video', err);
-
-    Logger.log('Video encoding complete.');
-});
-
-video.start();
-```
-
 ## Options
 
-You may pass the heAudio class an optional options object.
+The `--force` option ensures that lossless audio is also encoded.
 
-```javascript
-new heAudio({
-    encodeLossless: true, // Set to true if you would like to encode lossless audio streams (encode FLAC)
-    bitratePerChannel: 60, // Bitrate for he audio (40-60 is good)
-});
-```
+Type: Boolean<br>
+Default: false
+
+---
+
+The `--downmix` option downmixes he-audio opus to Dolby Pro Logic II.
+
+Type: Boolean<br>
+Default: false
+
+---
+
+The `--bitrate` option sets the encoding bitrate for he-audio per channel.
+
+Type: Number<br>
+Default: 40
+
+---

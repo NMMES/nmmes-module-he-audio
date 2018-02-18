@@ -66,7 +66,7 @@ module.exports = class HeAudio extends nmmes.Module {
             },
             'bitrate': {
                 default: 40,
-                describe: `Sets encoding bitrate for he-audio.`,
+                describe: `Sets encoding bitrate for he-audio per channel.`,
                 type: 'boolean',
                 group: 'Audio:'
             },
