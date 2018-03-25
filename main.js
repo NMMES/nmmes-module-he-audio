@@ -5,8 +5,10 @@ const Logger = nmmes.Logger;
 const chalk = require('chalk');
 
 module.exports = class HeAudio extends nmmes.Module {
-    constructor(args) {
+    constructor(args, logger = Logger) {
         super(require('./package.json'));
+        this.logger = logger;
+
         this.options = Object.assign(nmmes.Module.defaults(HeAudio), args);
     }
     executable(map) {
@@ -31,11 +33,11 @@ module.exports = class HeAudio extends nmmes.Module {
                 ++totalAudioStreams;
 
                 if (~metadata.codec_name.toLowerCase().indexOf('lossless') && !options.force) {
-                    Logger.debug(`Audio stream ${chalk.bold(formatStreamTitle(metadata))} [${chalk.bold(stream.map)}] will not be encoded to he audio because it is lossless.`);
+                    _self.logger.debug(`Audio stream ${chalk.bold(formatStreamTitle(metadata))} [${chalk.bold(stream.map)}] will not be encoded to he audio because it is lossless.`);
                     continue;
                 }
 
-                Logger.debug(`Applying he audio to audio stream ${chalk.bold(formatStreamTitle(metadata))} [${chalk.bold(stream.map)}]`);
+                _self.logger.debug(`Applying he audio to audio stream ${chalk.bold(formatStreamTitle(metadata))} [${chalk.bold(stream.map)}]`);
                 changes.streams[index] = {
                     ['c:' + pos]: 'libopus',
                     ['b:' + pos]: metadata.channels * options.bitrate + 'k',

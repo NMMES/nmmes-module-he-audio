@@ -4,7 +4,8 @@
   "description": "NMMES he-audio module",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postversion": "git push && npm publish"
   },
   "repository": {
     "type": "git",
