@@ -1,14 +1,18 @@
 # NMMES-module-he-audio
 
-A high efficiency audio module for nmmes-backend.
+A high efficiency audio module for [nmmes-backend](https://github.com/NMMES/nmmes-backend).
 
-### Dependencies
-
-- [nmmes-backend](https://github.com/NMMES/nmmes-backend) - Required in order to run this module.
+## Features
+- Encode audio channels with the [opus audio codec](https://opus-codec.org/comparison/).
+- Downmix using Dolby Pro Logic II algorithm if there are more than 3 audio channels in a stream.
+- Skip lossless audio streams unless force encode is enabled.
+- Specify base bitrate per audio channel.
 
 ## Installation
 
 [![NPM](https://nodei.co/npm/nmmes-module-he-audio.png?compact=true)](https://nodei.co/npm/nmmes-module-he-audio/)
+
+See https://github.com/NMMES/nmmes-cli/wiki/Modules for additional instructions.
 
 ## Options
 
