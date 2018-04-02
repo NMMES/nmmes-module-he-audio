@@ -1,6 +1,6 @@
 {
   "name": "nmmes-module-he-audio",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "NMMES he-audio module",
   "main": "main.js",
   "scripts": {
